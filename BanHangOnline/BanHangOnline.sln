@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34511.98
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BanHangOnline", "BanHangOnline\BanHangOnline.csproj", "{A2F15A57-BA6F-4462-A264-7B3F114F2942}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BanHangOnline", "BanHangOnline\BanHangOnline.csproj", "{A2F15A57-BA6F-4462-A264-7B3F114F2942}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{37E3BCC0-7465-49B4-8856-EA284B14CB78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A2F15A57-BA6F-4462-A264-7B3F114F2942}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2F15A57-BA6F-4462-A264-7B3F114F2942}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2F15A57-BA6F-4462-A264-7B3F114F2942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E3BCC0-7465-49B4-8856-EA284B14CB78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E3BCC0-7465-49B4-8856-EA284B14CB78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E3BCC0-7465-49B4-8856-EA284B14CB78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E3BCC0-7465-49B4-8856-EA284B14CB78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
