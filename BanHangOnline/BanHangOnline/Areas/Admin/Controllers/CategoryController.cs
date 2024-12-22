@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Areas.Admin.Controllers
@@ -9,7 +10,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
         private readonly WebStoreDbContext _db;
         public CategoryController(WebStoreDbContext dbContext)
         {
-            _db= dbContext;
+            _db = dbContext;
         }
 
         // GET: Admin/Category
@@ -28,9 +29,18 @@ namespace BanHangOnline.Areas.Admin.Controllers
         // Post: Admin/Category/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Category category)
+        public async Task<IActionResult> Add(Category model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                model.CreateDate = DateTime.Now;
+                model.ModifierDate = DateTime.Now;
+                model.Alias = Filter.FilterChar(model.Title ?? string.Empty);
+                await _db.Category.AddAsync(model);
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
     }
 }

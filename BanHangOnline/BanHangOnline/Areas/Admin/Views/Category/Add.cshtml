@@ -59,7 +59,7 @@
                 @using (Html.BeginForm("Add", "Category", FormMethod.Post, new { }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(false)
+                    @Html.ValidationSummary(true)
                     <!-- your steps content here -->
                     <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
                         <div class="form-group">
@@ -72,16 +72,23 @@
                             @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Thứ tự</label>
+                            @Html.TextBoxFor(x => x.Position, new { @class = "form-control", @Value = "1" })
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Seo title</label>
                             @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Seo Description</label>
                             @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Seo Keywords</label>
                             @Html.TextAreaFor(x => x.SeoKeywords, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <a href="/admin/category" class="btn btn-danger" >Back</a>
