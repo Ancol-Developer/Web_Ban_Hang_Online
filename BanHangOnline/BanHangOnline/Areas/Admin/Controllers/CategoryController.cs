@@ -42,5 +42,27 @@ namespace BanHangOnline.Areas.Admin.Controllers
             }
             return View(model);
         }
+
+        public IActionResult Edit(int id)
+        {
+            var items = _db.Category.FirstOrDefault(x => x.Id == id);
+            return View(items);  
+        }
+
+        // Post: Admin/Category/Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Category model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.ModifierDate = DateTime.Now;
+                model.Alias = Filter.FilterChar(model.Title ?? string.Empty);
+                _db.Category.Update(model);
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
     }
 }
