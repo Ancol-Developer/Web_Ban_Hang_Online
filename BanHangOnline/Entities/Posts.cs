@@ -12,6 +12,7 @@ public class Posts : CommonAbstract
     [Required]
     [StringLength(150)]
     public string? Title { get; set; }
+    public string? Alias { get; set; }
     public string? Description { get; set; }
     public string? Detail { get; set; }
     public string? Image { get; set; }
