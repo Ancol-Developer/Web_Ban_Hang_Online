@@ -64,5 +64,19 @@ namespace BanHangOnline.Areas.Admin.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var item = _db.Category.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                _db.Category.Remove(item);
+                _db.SaveChanges();
+                return Json(new {success = true});
+            }
+
+            return Json(new { success = false });
+        }
     }
 }
