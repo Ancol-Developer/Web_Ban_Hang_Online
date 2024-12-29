@@ -9,7 +9,7 @@ public class News : CommonAbstract
     [Key]
     [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    [Required]
+    [Required(ErrorMessage ="Bạn không thể để trống tiêu đề")]
     [StringLength(150)]
     public string? Title { get; set; }
     public string? Alias { get; set; }
