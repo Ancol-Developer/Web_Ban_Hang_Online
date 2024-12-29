@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace Entities;
 
@@ -14,6 +15,7 @@ public class News : CommonAbstract
     public string? Title { get; set; }
     public string? Alias { get; set; }
     public string? Description { get; set; }
+    [AllowHtml]
     public string? Detail { get; set; }
     public string? Image { get; set; }
     public int CategoryId { get; set; }
