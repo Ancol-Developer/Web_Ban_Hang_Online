@@ -33,13 +33,34 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 model.CreateDate = DateTime.Now;
                 model.ModifierDate = DateTime.Now;
 
-                model.CategoryId = 3;
+                model.CategoryId = 2;
 
                 model.Alias = Filter.FilterChar(model.Title);
                 _db.News.Add(model);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
+			return View(model);
+		}
+
+		public IActionResult Edit(int id)
+		{
+            var model = _db.News.FirstOrDefault(x => x.Id == id);
+			return View(model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Edit(News model)
+		{
+			if (ModelState.IsValid)
+			{
+				model.ModifierDate = DateTime.Now;
+				model.Alias = Filter.FilterChar(model.Title);
+				_db.News.Update(model);
+				_db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 			return View(model);
 		}
 	}
