@@ -63,5 +63,33 @@ namespace BanHangOnline.Areas.Admin.Controllers
 			}
 			return View(model);
 		}
-	}
+
+        public IActionResult Delete(int id)
+        {
+            var item = _db.News.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                _db.News.Remove(item);
+                _db.SaveChanges();
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public IActionResult IsActive(int id)
+        {
+            var item = _db.News.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                item.IsActive = !item.IsActive;
+                _db.News.Update(item);
+                _db.SaveChanges();
+                return Json(new { success = true, isActive = item.IsActive });
+            }
+
+            return Json(new { success = false });
+        }
+    }
 }
