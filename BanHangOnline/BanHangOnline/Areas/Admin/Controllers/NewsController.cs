@@ -26,8 +26,8 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		public IActionResult Add(News model)
-		{
+        public IActionResult Add(News model)
+        {
             if (ModelState.IsValid)
             {
                 model.CreateDate = DateTime.Now;
@@ -40,30 +40,31 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-			return View(model);
-		}
+            return View(model);
+        }
 
-		public IActionResult Edit(int id)
-		{
+        public IActionResult Edit(int id)
+        {
             var model = _db.News.FirstOrDefault(x => x.Id == id);
-			return View(model);
-		}
+            return View(model);
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Edit(News model)
-		{
-			if (ModelState.IsValid)
-			{
-				model.ModifierDate = DateTime.Now;
-				model.Alias = Filter.FilterChar(model.Title);
-				_db.News.Update(model);
-				_db.SaveChanges();
-				return RedirectToAction("Index");
-			}
-			return View(model);
-		}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(News model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.ModifierDate = DateTime.Now;
+                model.Alias = Filter.FilterChar(model.Title);
+                _db.News.Update(model);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
 
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             var item = _db.News.FirstOrDefault(x => x.Id == id);
@@ -87,6 +88,30 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 _db.News.Update(item);
                 _db.SaveChanges();
                 return Json(new { success = true, isActive = item.IsActive });
+            }
+
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAll(string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var items = ids.Split(',');
+                if (items is not null && items.Any())
+                {
+                    foreach (var item in items)
+                    {
+                        var obj = _db.News.FirstOrDefault(x => x.Id == int.Parse(item));
+                        if (obj is not null)
+                        {
+                            _db.News.Remove(obj);
+                            _db.SaveChanges();
+                        }
+                    }
+                    return Json(new { success = true });
+                }
             }
 
             return Json(new { success = false });
