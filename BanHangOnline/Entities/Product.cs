@@ -23,7 +23,8 @@ public class Product : CommonAbstract
     public bool IsHome { get; set; }
     public bool IsSale { get; set; }
     public bool IsHot { get; set; }
-    public bool IsFeature {  get; set; }
+	public bool IsActive { get; set; }
+	public bool IsFeature {  get; set; }
     public int ProductCategoryId { get; set; }
     public string? SeoTitle { get; set; }
     public string? SeoDescription { get; set; }
