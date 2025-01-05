@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using BanHangOnline.Common;
+using Entities;
 using Entities.Common;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +14,11 @@ namespace BanHangOnline.Areas.Admin.Controllers
             _db = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            var items = _db.News.OrderByDescending(x => x.Id).ToList();
-            return View(items);
+            int pageSize = 8;
+            
+            return View(await PaginatedList<News>.CreateAsync(_db.News.OrderByDescending(x => x.Id), pageNumber ?? 1, pageSize));
         }
 
         public IActionResult Add()

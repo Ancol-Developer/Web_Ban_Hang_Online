@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Entities.News>
+﻿@model BanHangOnline.Common.PaginatedList<Entities.News>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
 	ViewBag.Title = "Danh sách tin tức";
@@ -94,6 +95,13 @@
                     }
                 </tbody>
             </table>
+
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisable = !Model.HasNextPage ? "disabled" : "";
+            }
+            <a asp-action="Index" asp-controller="News" asp-route-pageNumber="@(Model.PageIndex -1)" class="btn btn-default @prevDisabled">Previous</a>
+            <a asp-action="Index" asp-controller="News" asp-route-pageNumber="@(Model.PageIndex +1)" class="btn btn-default @nextDisable">Next</a>
         </div>
         <!-- /.card-footer-->
     </div>
