@@ -1,33 +1,22 @@
-﻿using BanHangOnline.Common;
-using Entities;
+﻿using Entities;
 using Entities.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class NewsController : Controller
+    public class PostsController : Controller
     {
         private readonly WebStoreDbContext _db;
-        public NewsController(WebStoreDbContext dbContext)
+        public PostsController(WebStoreDbContext dbContext)
         {
             _db = dbContext;
         }
 
-        public IActionResult Index(string searchString, int? pageNumber)
+        public IActionResult Index()
         {
-            int pageSize = 10;
-            var items = _db.News.OrderByDescending(x => x.Id).ToList();
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                items = items.Where(s => s.Alias?.Contains(searchString) == true || s.Title?.Contains(searchString) == true).ToList();
-            }
-
-            ViewBag.PageSize = pageSize;
-
-            // Save Search string
-            ViewBag.SearchText = searchString;
-            return View(PaginatedList<News>.CreateAsync(items, pageNumber ?? 1, pageSize));
+            var items = _db.Posts.ToList();
+            return View(items);
         }
 
         public IActionResult Add()
@@ -37,7 +26,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(News model)
+        public IActionResult Add(Posts model)
         {
             if (ModelState.IsValid)
             {
@@ -47,7 +36,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 model.CategoryId = 2;
 
                 model.Alias = Filter.FilterChar(model.Title);
-                _db.News.Add(model);
+                _db.Posts.Add(model);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -56,19 +45,19 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
         public IActionResult Edit(int id)
         {
-            var model = _db.News.FirstOrDefault(x => x.Id == id);
+            var model = _db.Posts.FirstOrDefault(x => x.Id == id);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(News model)
+        public IActionResult Edit(Posts model)
         {
             if (ModelState.IsValid)
             {
                 model.ModifierDate = DateTime.Now;
                 model.Alias = Filter.FilterChar(model.Title);
-                _db.News.Update(model);
+                _db.Posts.Update(model);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -78,10 +67,10 @@ namespace BanHangOnline.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var item = _db.News.FirstOrDefault(x => x.Id == id);
+            var item = _db.Posts.FirstOrDefault(x => x.Id == id);
             if (item is not null)
             {
-                _db.News.Remove(item);
+                _db.Posts.Remove(item);
                 _db.SaveChanges();
                 return Json(new { success = true });
             }
@@ -92,11 +81,11 @@ namespace BanHangOnline.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult IsActive(int id)
         {
-            var item = _db.News.FirstOrDefault(x => x.Id == id);
+            var item = _db.Posts.FirstOrDefault(x => x.Id == id);
             if (item is not null)
             {
                 item.IsActive = !item.IsActive;
-                _db.News.Update(item);
+                _db.Posts.Update(item);
                 _db.SaveChanges();
                 return Json(new { success = true, isActive = item.IsActive });
             }
@@ -114,10 +103,10 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 {
                     foreach (var item in items)
                     {
-                        var obj = _db.News.FirstOrDefault(x => x.Id == int.Parse(item));
+                        var obj = _db.Posts.FirstOrDefault(x => x.Id == int.Parse(item));
                         if (obj is not null)
                         {
-                            _db.News.Remove(obj);
+                            _db.Posts.Remove(obj);
                             _db.SaveChanges();
                         }
                     }

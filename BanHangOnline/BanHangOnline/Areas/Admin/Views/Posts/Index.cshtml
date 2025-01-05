@@ -1,8 +1,7 @@
-﻿@model BanHangOnline.Common.PaginatedList<Entities.News>
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@model IEnumerable<Entities.Posts>
 
 @{
-    ViewBag.Title = "Danh sách tin tức";
+    ViewBag.Title = "Bài viết";
 }
 
 @section naviheader {
@@ -14,7 +13,7 @@
             <a href="/Admin/Home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/Admin/News" class="nav-link">@ViewBag.Title</a>
+            <a href="/Admin/Posts" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
@@ -24,7 +23,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Danh sách danh mục</h1>
+                <h1>Danh sách @ViewBag.Title</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -45,41 +44,28 @@
             <h3 class="card-title">@ViewBag.Title</h3>
 
             <div class="card-tools">
-                <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
+                <a href="/admin/posts/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="btnDeleteAll">Xóa</a>
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-6">
-                    <form asp-action="Index" method="get">
-                        <div class="input-group input-group-sm">
-                            <input type="text" name="searchString" class="form-control" value="@ViewBag.SearchText" />
-                            <span class="input-group-append">
-                                <button type="submit" value="Search" class="btn btn-info btn-flat">Tìm kiếm</button>
-                                <a type="button" asp-action="Index" asp-controller="News" class="btn btn-default">Back to Full List</a>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="SelectAll" /></th>
                         <th>STT</th>
                         <th>Hình ảnh</th>
-                        <th style="min-width:700px">Tiêu đề</th>
+                        <th>Tiêu đề</th>
                         <th>Ngày tạo</th>
                         <th class="text-center">Hiển thị</th>
-                        <th style="width:150px;"></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = ViewBag.PageSize * (Model.PageIndex - 1) + 1;
+                        var i = 1;
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
@@ -93,7 +79,7 @@
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
                                 <td>
-                                    <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/posts/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
                                     <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
@@ -108,25 +94,6 @@
                     }
                 </tbody>
             </table>
-
-            @{
-                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-                var nextDisable = !Model.HasNextPage ? "disabled" : "";
-            }
-
-            <a asp-action="Index" asp-controller="News" asp-route-pageNumber="@(Model.PageIndex -1)" class="btn btn-default @prevDisabled">Previous</a>
-            @for (int i = 1; i <= Model.TotalPages; i++)
-            {
-                if (i == Model.PageIndex)
-                {
-                    <a asp-action="Index" asp-controller="News" asp-route-pageNumber="@i" class="btn btn-primary">@i</a>
-                }
-                else
-                {
-                    <a asp-action="Index" asp-controller="News" asp-route-pageNumber="@i" class="btn btn-default">@i</a>
-                }
-            }
-            <a asp-action="Index" asp-controller="News" asp-route-pageNumber="@(Model.PageIndex +1)" class="btn btn-default @nextDisable">Next</a>
         </div>
         <!-- /.card-footer-->
     </div>
@@ -161,7 +128,7 @@
                     var conf = confirm("Bạn có muốn xóa các bản ghi này không?");
                     if (conf === true) {
                         $.ajax({
-                            url: '/admin/news/DeleteAll',
+                            url: '/admin/posts/DeleteAll',
                             type: 'POST',
                             data: { ids: str },
                             success: function (rs) {
@@ -194,7 +161,7 @@
                 var conf = confirm("Bạn có muốn xóa bản ghi này không?");
                 if (conf == true) {
                     $.ajax({
-                        url: '/admin/news/delete',
+                        url: '/admin/posts/delete',
                         type: 'POST',
                         data: { id: id },
                         success: function (rs) {
@@ -210,7 +177,7 @@
                 var btn = $(this);
                 var id = btn.data("id");
                 $.ajax({
-                    url: '/admin/news/IsActive',
+                    url: '/admin/posts/IsActive',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {
