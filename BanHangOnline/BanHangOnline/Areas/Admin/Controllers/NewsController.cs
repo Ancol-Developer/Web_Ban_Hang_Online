@@ -14,11 +14,20 @@ namespace BanHangOnline.Areas.Admin.Controllers
             _db = dbContext;
         }
 
-        public async Task<IActionResult> Index(int? pageNumber)
+        public IActionResult Index(string searchString, int? pageNumber)
         {
-            int pageSize = 8;
-            
-            return View(await PaginatedList<News>.CreateAsync(_db.News.OrderByDescending(x => x.Id), pageNumber ?? 1, pageSize));
+            int pageSize = 10;
+            var items = _db.News.OrderByDescending(x => x.Id).ToList();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                items = items.Where(s => s.Alias?.Contains(searchString) == true || s.Title?.Contains(searchString) == true).ToList();
+            }
+
+            ViewBag.PageSize = pageSize;
+
+            // Save Search string
+            ViewBag.SearchText = searchString;
+            return View(PaginatedList<News>.CreateAsync(items, pageNumber ?? 1, pageSize));
         }
 
         public IActionResult Add()
