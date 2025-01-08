@@ -144,7 +144,7 @@
 		function BrowseServer(field) {
 			var finder = new CKFinder();
 			finder.selectActionFunction = function (fileUrl) {
-				document.getElementById(field).ariaValueMax = fileUrl;
+				document.getElementById(field).value = fileUrl;
 			};
 
 			finder.popup();

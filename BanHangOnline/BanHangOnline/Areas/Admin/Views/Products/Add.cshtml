@@ -1,4 +1,5 @@
 ﻿@model Entities.Product
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewBag.Title = "Thêm mới sản phẩm";
 }
@@ -164,97 +165,36 @@
                                     </div>
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="timeline">
-                                        <!-- The timeline -->
-                                        <div class="timeline timeline-inverse">
-                                            <!-- timeline time label -->
-                                            <div class="time-label">
-                                                <span class="bg-danger">
-                                                    10 Feb. 2014
-                                                </span>
-                                            </div>
-                                            <!-- /.timeline-label -->
-                                            <!-- timeline item -->
-                                            <div>
-                                                <i class="fas fa-envelope bg-primary"></i>
-
-                                                <div class="timeline-item">
-                                                    <span class="time"><i class="far fa-clock"></i> 12:05</span>
-
-                                                    <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                                                    <div class="timeline-body">
-                                                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                                        quora plaxo ideeli hulu weebly balihoo...
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form asp-action="UploadImages" method="post" enctype="multipart/form-data">
+                                                    <div>
+                                                        <label for="images">Select images:</label>
+                                                        <input type="file" name="images" id="images" multiple accept="image/*" />
                                                     </div>
-                                                    <div class="timeline-footer">
-                                                        <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                                    </div>
-                                                </div>
+                                                    <br />
+                                                    <button type="submit" class="btn btn-primary">Upload Images</button>
+                                                </form>
                                             </div>
-                                            <!-- END timeline item -->
-                                            <!-- timeline item -->
-                                            <div>
-                                                <i class="fas fa-user bg-info"></i>
-
-                                                <div class="timeline-item">
-                                                    <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-
-                                                    <h3 class="timeline-header border-0">
-                                                        <a href="#">Sarah Young</a> accepted your friend request
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                            <!-- END timeline item -->
-                                            <!-- timeline item -->
-                                            <div>
-                                                <i class="fas fa-comments bg-warning"></i>
-
-                                                <div class="timeline-item">
-                                                    <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-
-                                                    <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                                                    <div class="timeline-body">
-                                                        Take me to your leader!
-                                                        Switzerland is small and neutral!
-                                                        We are more like Germany, ambitious and misunderstood!
-                                                    </div>
-                                                    <div class="timeline-footer">
-                                                        <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- END timeline item -->
-                                            <!-- timeline time label -->
-                                            <div class="time-label">
-                                                <span class="bg-success">
-                                                    3 Jan. 2014
-                                                </span>
-                                            </div>
-                                            <!-- /.timeline-label -->
-                                            <!-- timeline item -->
-                                            <div>
-                                                <i class="fas fa-camera bg-purple"></i>
-
-                                                <div class="timeline-item">
-                                                    <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-
-                                                    <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                                                    <div class="timeline-body">
-                                                        <img src="https://placehold.it/150x100" alt="...">
-                                                        <img src="https://placehold.it/150x100" alt="...">
-                                                        <img src="https://placehold.it/150x100" alt="...">
-                                                        <img src="https://placehold.it/150x100" alt="...">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- END timeline item -->
-                                            <div>
-                                                <i class="far fa-clock bg-gray"></i>
+                                            <div class=" col-md-12">
+                                                <table class="table table-hover" id="tbAnhSanPham">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Ảnh</th>
+                                                            <th>Ảnh đại diện</th>
+                                                            <th>Thao tác</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td><img width="80" src="#"/></td>
+                                                            <td><input type="radio" name="rDefault"/></td>
+                                                            <td><a href="#" class="btn btn-sm btn-danger">Xóa</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -322,7 +262,7 @@
         function BrowseServer(field) {
             var finder = new CKFinder();
             finder.selectActionFunction = function (fileUrl) {
-                document.getElementById(field).ariaValueMax = fileUrl;
+                document.getElementById(field).value = fileUrl;
             };
 
             finder.popup();

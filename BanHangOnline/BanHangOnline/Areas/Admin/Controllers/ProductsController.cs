@@ -8,10 +8,12 @@ namespace BanHangOnline.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductsController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly WebStoreDbContext _db;
-        public ProductsController(WebStoreDbContext dbContext)
+        public ProductsController(WebStoreDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _db = dbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index(string searchString, int? pageNumber)
@@ -35,5 +37,12 @@ namespace BanHangOnline.Areas.Admin.Controllers
             ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(),"Id","Title");
             return View();
         }
+
+        #region Upload Image
+        public IActionResult UploadImages(List<IFormFile> images)
+        {
+            var uploadedImagePaths = new List<string>();
+        }
+        #endregion
     }
 }
