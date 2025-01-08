@@ -1,6 +1,7 @@
 ﻿using BanHangOnline.Common;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BanHangOnline.Areas.Admin.Controllers
 {
@@ -31,6 +32,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
         public IActionResult Add()
         {
+            ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(),"Id","Title");
             return View();
         }
     }
