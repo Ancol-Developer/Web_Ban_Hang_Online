@@ -34,7 +34,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
         public IActionResult Add()
         {
-            ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(),"Id","Title");
+            ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(), "Id", "Title");
             return View();
         }
 
@@ -42,6 +42,30 @@ namespace BanHangOnline.Areas.Admin.Controllers
         public IActionResult UploadImages(List<IFormFile> images)
         {
             var uploadedImagePaths = new List<string>();
+            if (images is not null && images.Any())
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                foreach (var image in images)
+                {
+                    // Check file
+                    var extension = Path.GetExtension(image.FileName).ToLower();
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        ViewData["Message"] = "Invalid file type! Only JPG, PNG, and GIF are allowed.";
+                        return View();
+                    }
+
+                    if (image.Length > 2 * 1024 * 1024) // 2MB
+                    {
+                        ViewData["Message"] = "File size must not exceed 2MB.";
+                        return View();
+                    }
+
+                    string uploadDir = Path.Combine();
+
+                }
+            }
+            return View();
         }
         #endregion
     }

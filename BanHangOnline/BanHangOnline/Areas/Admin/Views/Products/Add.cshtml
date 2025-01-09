@@ -167,14 +167,7 @@
                                     <div class="tab-pane" id="timeline">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <form asp-action="UploadImages" method="post" enctype="multipart/form-data">
-                                                    <div>
-                                                        <label for="images">Select images:</label>
-                                                        <input type="file" name="images" id="images" multiple accept="image/*" />
-                                                    </div>
-                                                    <br />
-                                                    <button type="submit" class="btn btn-primary">Upload Images</button>
-                                                </form>
+                                                @await Html.PartialAsync("_PartialImportImage", Model)
                                             </div>
                                             <div class=" col-md-12">
                                                 <table class="table table-hover" id="tbAnhSanPham">
@@ -191,6 +184,12 @@
                                                             <td>1</td>
                                                             <td><img width="80" src="#"/></td>
                                                             <td><input type="radio" name="rDefault"/></td>
+                                                            <td><a href="#" class="btn btn-sm btn-danger">Xóa</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td><img width="80" src="#" /></td>
+                                                            <td><input type="radio" name="rDefault" /></td>
                                                             <td><a href="#" class="btn btn-sm btn-danger">Xóa</a></td>
                                                         </tr>
                                                     </tbody>
