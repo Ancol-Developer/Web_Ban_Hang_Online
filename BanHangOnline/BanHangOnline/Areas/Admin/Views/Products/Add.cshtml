@@ -228,13 +228,18 @@
 	<script>
 		$(document).ready(function (){
 			$('#upload-images-btn').on('click', function () {
-				var form = $('#upload-image-form')[0];
+				var formData = new FormData();
 
-				var formData = new FormData(form);
+				// Get files from input and add to FormData
+				var files = $('#images')[0].files;
+				if (files.length === 0) {
+					alert('Please select a file before uploading.');
+					return;
+				}
 
-				for (var pair of formData.entries()) {
-					console.log(pair[0] + ': ' + pair[1]);
-					}
+				for (var i = 0; i < files.length; i++) {
+					formData.append('images', files[i]);
+				}
 
 				$.ajax({
 					url: '/Admin/Products/UploadImages',
