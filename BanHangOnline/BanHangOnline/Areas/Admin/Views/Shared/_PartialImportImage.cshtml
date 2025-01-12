@@ -1,31 +1,19 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    ViewData["Title"] = "Upload Multiple Images";
-}
+﻿@model IEnumerable<string>
 
-<h2>Upload Multiple Images</h2>
+<h3>Upload Images</h3>
 
-<form asp-action="UploadImages" method="post" enctype="multipart/form-data">
-    <div>
-        <label for="images">Select images:</label>
-        <input type="file" name="images" id="images" multiple accept="image/*" />
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Upload Images</button>
+<form id="upload-image-form" method="post" enctype="multipart/form-data">
+    <input type="file" name="images" id="images" multiple accept="image/*" />
+    <button type="button" id="upload-images-btn" class="btn btn-primary">Upload Images</button>
 </form>
 
-@if (ViewData["Message"] != null)
-{
-    <p style="color: green;">@ViewData["Message"]</p>
-}
-
-@if (ViewData["ImagePaths"] != null)
-{
-    <h3>Uploaded Images:</h3>
-    <div>
-        @foreach (var imagePath in (IEnumerable<string>)ViewData["ImagePaths"])
+<div id="uploaded-images">
+    @if (Model != null && Model.Any())
+    {
+        <h4>Uploaded Images:</h4>
+        @foreach (var imagePath in Model)
         {
             <img src="@imagePath" alt="Uploaded Image" style="max-width: 150px; margin: 5px;" />
         }
-    </div>
-}
+    }
+</div>

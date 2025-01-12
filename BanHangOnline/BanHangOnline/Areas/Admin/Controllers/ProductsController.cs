@@ -39,33 +39,35 @@ namespace BanHangOnline.Areas.Admin.Controllers
         }
 
         #region Upload Image
-        public IActionResult UploadImages(List<IFormFile> images)
+        [HttpPost]
+        public async Task<IActionResult> UploadImages(List<IFormFile> images)
         {
             var uploadedImagePaths = new List<string>();
             if (images is not null && images.Any())
             {
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
                 foreach (var image in images)
                 {
-                    // Check file
-                    var extension = Path.GetExtension(image.FileName).ToLower();
-                    if (!allowedExtensions.Contains(extension))
+                    // Create directory save file
+                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    if (!Directory.Exists(uploadDir))
                     {
-                        ViewData["Message"] = "Invalid file type! Only JPG, PNG, and GIF are allowed.";
-                        return View();
+                        Directory.CreateDirectory(uploadDir);
                     }
 
-                    if (image.Length > 2 * 1024 * 1024) // 2MB
+                    // Save file
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+                    string filePath = Path.Combine(uploadDir, uniqueFileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        ViewData["Message"] = "File size must not exceed 2MB.";
-                        return View();
+                        await image.CopyToAsync(stream);
                     }
 
-                    string uploadDir = Path.Combine();
-
+                    // Save directory to Data
+                    uploadedImagePaths.Add("/uploads/" + uniqueFileName);
                 }
             }
-            return View();
+
+            return Json(uploadedImagePaths);
         }
         #endregion
     }

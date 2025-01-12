@@ -3,6 +3,7 @@ using Entities.IdentityEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,11 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
                                 // create repository of user and role de thao tac du lieu nguoi dung trong dbcontext
     .AddUserStore<UserStore<ApplicationUser, ApplicationRole, WebStoreDbContext, int>>()
     .AddRoleStore<RoleStore<ApplicationRole, WebStoreDbContext, int>>();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100 MB
+});
 
 var app = builder.Build();
 
