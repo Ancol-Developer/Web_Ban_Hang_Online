@@ -7,13 +7,16 @@
     <button type="button" id="upload-images-btn" class="btn btn-primary">Upload Images</button>
 </form>
 
-<div id="uploaded-images">
-    @if (Model != null && Model.Any())
-    {
-        <h4>Uploaded Images:</h4>
-        @foreach (var imagePath in Model)
-        {
-            <img src="@imagePath" alt="Uploaded Image" style="max-width: 150px; margin: 5px;" />
-        }
-    }
-</div>
+<table class="table table-hover" id="tbAnhSanPham">
+    <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">Ảnh</th>
+            <th class="text-center">Ảnh đại diện</th>
+            <th class="text-center">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody id="uploaded-images">
+        
+    </tbody>
+</table>
