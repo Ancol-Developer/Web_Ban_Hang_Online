@@ -6,6 +6,11 @@ namespace Entities;
 [Table("tb_Product")]
 public class Product : CommonAbstract
 {
+    public Product()
+    {
+        this.ProductImage = new HashSet<ProductImage>();
+        this.OrderDetail = new HashSet<OrderDetail>();
+    }
     [Key]
     [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -21,7 +26,7 @@ public class Product : CommonAbstract
 	[StringLength(250)]
     public string? Image { get; set; }
 	public decimal Price { get; set; }
-    public decimal PriceSale { get; set; }
+    public decimal? PriceSale { get; set; }
     public int Quantity { get; set; }
     public bool IsHome { get; set; }
     public bool IsSale { get; set; }
@@ -36,6 +41,8 @@ public class Product : CommonAbstract
 	[StringLength(250)]
 	public string? SeoKeywords { get; set; }
 
-	public virtual ProductCategory? ProductCategory { get; set; }
-    public virtual OrderDetail? OrderDetail { get; set; }
+    [ForeignKey(nameof(ProductCategoryId))]
+    public virtual ProductCategory? ProductCategory { get; set; }
+    public virtual ICollection<OrderDetail> OrderDetail { get; set; }
+    public virtual ICollection<ProductImage> ProductImage { get; set; }
 }

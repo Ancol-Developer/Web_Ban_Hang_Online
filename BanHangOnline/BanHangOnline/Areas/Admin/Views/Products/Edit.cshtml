@@ -1,7 +1,7 @@
 ﻿@model Entities.Product
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewBag.Title = "Thêm mới sản phẩm";
+    ViewBag.Title = "Cập nhật sản phẩm";
 }
 
 @section naviheader {
@@ -16,7 +16,7 @@
             <a href="/Admin/Products" class="nav-link">Sản phẩm</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Thêm mới</a>
+            <a href="#" class="nav-link">Cập nhật</a>
         </li>
     </ul>
 }
@@ -26,12 +26,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm mới sản phẩm</h1>
+                <h1>Cập nhật sản phẩm</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
-                    <li class="breadcrumb-item active">Thêm mới</li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
             </div>
         </div>
@@ -44,7 +44,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thông tin thêm mới sản phẩm</h3>
+            <h3 class="card-title">Thông tin sản phẩm</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -58,15 +58,16 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("Add", "Products", FormMethod.Post, new { }))
+                    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
+                        @Html.HiddenFor(x => x.Id);
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+                                    @* <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li> *@
                                     <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
                                 </ul>
                             </div><!-- /.card-header -->
@@ -116,7 +117,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá</label>
-                                                    <input type="text" value="0" name="demoPrice" id="demoPrice" class="form-control auto" data-a-dec="," data-a-sep="." />
+                                                    <input type="text" name="demoPrice" id="demoPrice" value="@Model.Price" class="form-control auto" data-a-dec="," data-a-sep="." />
                                                     @Html.HiddenFor(x => x.Price, new { @class = "form-control", @placeholder = "Giá" })
                                                     @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                                                 </div>
@@ -124,7 +125,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá khuyến mãi</label>
-                                                    <input type="text" value="0" name="demoPriceSale" id="demoPriceSale" class="form-control auto"/>
+                                                    <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.PriceSale" class="form-control auto" />
                                                     @Html.HiddenFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Giá" })
                                                     @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
                                                 </div>
@@ -166,16 +167,6 @@
                                         </div>
                                     </div>
                                     <!-- /.tab-pane -->
-                                    <div class="tab-pane" id="timeline">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                @await Html.PartialAsync("_PartialImportImage", new List<string>())
-                                                <input type="hidden" id="uploadedImages" name="UploadedImages" />
-                                            </div>
-                                            <input type="hidden" id="tCurrentId" value="0" />
-                                        </div>
-                                    </div>
-                                    <!-- /.tab-pane -->
 
                                     <div class="tab-pane" id="settings">
                                         <div class="form-horizontal">
@@ -210,7 +201,8 @@
                             </div><!-- /.card-body -->
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-success">Thêm mới</button>
+                                <button type="submit" class="btn btn-success">Lưu</button>
+                                <a href="/admin/products" class="btn btn-danger">Quay lại</a>
                             </div>
                         </div>
                     }
@@ -262,7 +254,7 @@
                 }
 
                 $.ajax({
-                    url: '/Admin/ProductImages/UploadImages',
+                    url: '/Admin/Products/UploadImages',
                     type: 'post',
                     data: formData,
                     processData: false,
@@ -275,45 +267,6 @@
                     }
                 });
             });
-
-            $('body').on('click', '.btnDeleteImage', function () {
-                var conf = confirm("Bạn có muốn xóa ảnh không?");
-                if (conf === true) {
-                    var _id = $(this).data('id');
-                    $('#trow_' + _id).fadeTo('fast', 0.5, function () {
-                        $(this).slideUp('fast', function () { $(this).remove(); });
-                    });
-
-                    var temp = $('#tCurrentId').val();
-                    var currentId = parseInt(temp) - 1;
-                    $('#tCurrentId').val(currentId);
-                }
-            })
         });
-
-        function addImageProduct(url) {
-            var temp = $('#tCurrentId').val();
-            var currentId = parseInt(temp) + 1;
-            var str = "";
-            if (currentId == 1) {
-                str = `<tr id="trow_${currentId}">
-                                    <td class="text-center">${currentId}</td>
-                                    <td class="text-center"><img width="80" src="${url}"/><input type='hidden' value="${url}" name="listImages"></td>
-                                    <td class="text-center"><input type="radio" value="${currentId}" name="rDefault" checked="checked"/></td>
-                                    <td class="text-center"><a href="#" class="btn btn-sm btn-danger btnDeleteImage" data-id="${currentId}">Xóa</a></td>
-                                 </tr>`;
-            }
-            else {
-                str = `<tr id="trow_${currentId}">
-                                    <td class="text-center">${currentId}</td>
-                                    <td class="text-center"><img width="80" src="${url}"/><input type='hidden' value="${url}" name="listImages"></td>
-                                    <td class="text-center"><input type="radio" value="${currentId}" name="rDefault"/></td>
-                                    <td class="text-center"><a href="#" class="btn btn-sm btn-danger btnDeleteImage" data-id="${currentId}">Xóa</a></td>
-                                 </tr>`;
-            }
-
-            $('#uploaded-images').append(str)
-            $('#tCurrentId').val(currentId);
-        }
     </script>
 }

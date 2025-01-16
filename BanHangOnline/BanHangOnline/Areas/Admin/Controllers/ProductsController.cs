@@ -1,25 +1,25 @@
 ﻿using BanHangOnline.Common;
 using Entities;
+using Entities.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BanHangOnline.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductsController : Controller
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly WebStoreDbContext _db;
-        public ProductsController(WebStoreDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+        public ProductsController(WebStoreDbContext dbContext)
         {
             _db = dbContext;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index(string searchString, int? pageNumber)
         {
             int pageSize = 10;
-            var items = _db.Product.OrderByDescending(x => x.Id).ToList();
+            var items = _db.Product.Include(x => x.ProductCategory).Include(x => x.ProductImage).OrderByDescending(x => x.Id).ToList();
             if (!string.IsNullOrEmpty(searchString))
             {
                 items = items.Where(s => s.Alias?.Contains(searchString) == true || s.Title?.Contains(searchString) == true).ToList();
@@ -38,37 +38,96 @@ namespace BanHangOnline.Areas.Admin.Controllers
             return View();
         }
 
-        #region Upload Image
         [HttpPost]
-        public async Task<IActionResult> UploadImages(List<IFormFile> images)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(Product model, List<string> listImages, List<int> rDefault)
         {
-            var uploadedImagePaths = new List<string>();
-            if (images is not null && images.Any())
+            if (ModelState.IsValid)
             {
-                foreach (var image in images)
+                if (listImages.Any() && listImages.Count > 0)
                 {
-                    // Create directory save file
-                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-                    if (!Directory.Exists(uploadDir))
+                    for (int i = 0; i < listImages.Count; i++)
                     {
-                        Directory.CreateDirectory(uploadDir);
+                        if (i + 1 == rDefault.FirstOrDefault())
+                        {
+                            model.Image = listImages[i];
+                            model.ProductImage.Add(new ProductImage
+                            {
+                                ProductId = model.Id,
+                                Image = listImages[i],
+                                IsDefault = true,
+                            });
+                        }
+                        else
+                        {
+                            model.ProductImage.Add(new ProductImage
+                            {
+                                ProductId = model.Id,
+                                Image = listImages[i],
+                                IsDefault = false,
+                            });
+                        }
                     }
-
-                    // Save file
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
-                    string filePath = Path.Combine(uploadDir, uniqueFileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await image.CopyToAsync(stream);
-                    }
-
-                    // Save directory to Data
-                    uploadedImagePaths.Add("/uploads/" + uniqueFileName);
                 }
+                model.CreateDate = DateTime.Now;
+                model.ModifierDate = DateTime.Now;
+
+                if (string.IsNullOrEmpty(model.Alias))
+                {
+                    model.Alias = Filter.FilterChar(model.Title ?? string.Empty);
+                }
+
+                if (string.IsNullOrEmpty(model.SeoTitle))
+                {
+                    model.SeoTitle = model.Title;
+                }
+
+                model.ProductCategory = _db.ProductCategory.FirstOrDefault(x => x.Id == model.ProductCategoryId);
+
+                _db.Product.Add(model);
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
 
-            return Json(uploadedImagePaths);
+            ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(), "Id", "Title");
+            return View(model);
         }
-        #endregion
+
+        public IActionResult Edit(int id)
+        {
+            ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(), "Id", "Title");
+            var item = _db.Product.FirstOrDefault(x => x.Id == id);
+            return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Product model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.ModifierDate = DateTime.Now;
+                _db.Product.Update(model);
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ProductCategory = new SelectList(_db.ProductCategory.ToList(), "Id", "Title");
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var item = _db.Product.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                _db.Product.Remove(item);
+                _db.SaveChanges();
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
     }
 }

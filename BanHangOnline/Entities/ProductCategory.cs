@@ -8,7 +8,7 @@ public class ProductCategory : CommonAbstract
 {
     public ProductCategory()
     {
-        Products = new List<Product>();
+        Products = new HashSet<Product>();
     }
     [Key]
     [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
