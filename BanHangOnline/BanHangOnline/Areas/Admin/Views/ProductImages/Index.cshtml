@@ -1,6 +1,94 @@
-﻿@{
-    ViewBag.Title = "Ảnh sản phẩm";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutEmpty.cshtml";
+﻿@model IEnumerable<Entities.ProductImage>
+@{
+	ViewBag.Title = "Ảnh sản phẩm";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutEmpty.cshtml";
 }
+<style>
+	.glImage {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+	}
 
-<h1>aa</h1>
+		.glImage li {
+			display: inline-block;
+			position: relative;
+		}
+
+	.box-btn {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		text-align: center;
+	}
+</style>
+
+<section class="content">
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title">Ảnh sản phẩm</h3>
+
+			<div class="card-tools">
+				<button type="button" class="btn btn-danger" title="Collapse">
+					Xóa hết
+				</button>
+				<button type="button" class="btn btn-success" title="Remove">
+					Thêm ảnh
+				</button>
+			</div>
+		</div>
+		<div class="card-body">
+			<ul class="glImage">
+				@if (Model is not null)
+				{
+					foreach (var item in Model)
+					{
+						<li id="trow_@item.Id">
+							<img src="@item.Image" width="200" />
+							<div class="box-btn">
+								<a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
+								<a href="#" data-id="@item.Id" class="btn btn-sm btn-success btnDefault"><i class="fa fa-check"></i></a>
+							</div>
+						</li>
+					}
+				}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<script>
+	function AddImage(id, url){
+		$.ajax({
+			url: '/admin/productImages/AddImage',
+			type: 'POST',
+			data:{ prodcutId: id, url : url },
+			success: function(rs){
+				if(rs.success){
+					window.location.reload();
+				}
+			}
+		});
+	}
+
+	$(document).ready(function(){
+		$('body').on('click', '.btnDelete', function(){
+			var id = $(this).data('id');
+			var conf = confirm("Bạn có muốn xóa ảnh này không?");
+			if(conf == true){
+				$.ajax({
+					url: '/admin/productImages/delete',
+					type: 'POST',
+					data:{ id: id },
+					success: function(rs){
+						if(rs.success){
+							$('#trow_'+ id).remove();
+						}
+					}
+				});
+			}
+		})
+	});
+</script>

@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Areas.Admin.Controllers
@@ -17,7 +16,47 @@ namespace BanHangOnline.Areas.Admin.Controllers
         public IActionResult Index(int id)
         {
             var items = _db.ProductImage.Where(x => x.ProductId == id).ToList();
+            ViewBag.ProductId = items.First().ProductId;
             return View(items);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddImage(int productId, string url)
+        {
+            await _db.ProductImage.AddAsync(new ProductImage
+            {
+                ProductId = productId,
+                Image = url,
+                IsDefault = false,
+            });
+
+            await _db.SaveChangesAsync();
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = _db.ProductImage.FirstOrDefault(x => x.Id == id);
+            if (item is not null
+                && item.Image is not null)
+            {
+                string relativePath = item.Image;
+                if (relativePath.StartsWith("/"))
+                {
+                    relativePath = relativePath.Substring(1);
+                }
+                string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, relativePath);
+                if (System.IO.File.Exists(uploadDir))
+                {
+                    System.IO.File.Delete(uploadDir);
+                }
+
+                _db.ProductImage.Remove(item);
+                await _db.SaveChangesAsync();
+                return Json(new {success = true});
+            }
+            return Json(new { success = false });
         }
 
         #region Upload Image

@@ -90,7 +90,7 @@
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" id="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
-                                <td><img class="imgProduct" data-id="@item.Id" src="@item.ProductImage.FirstOrDefault(x => x.IsDefault)" width="50" /></td>
+                                <td><img class="imgProduct" data-id="@item.Id" src="@item.ProductImage.FirstOrDefault(x => x.IsDefault)?.Image" width="50" /></td>
                                 <td>@item.Title</td>
                                 <td>@item.ProductCategory?.Title</td>
                                 <td>@item.Quantity</td>
