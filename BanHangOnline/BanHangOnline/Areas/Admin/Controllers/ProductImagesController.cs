@@ -54,14 +54,13 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
                 _db.ProductImage.Remove(item);
                 await _db.SaveChangesAsync();
-                return Json(new {success = true});
+                return Json(new { success = true });
             }
             return Json(new { success = false });
         }
 
-        #region Upload Image
         [HttpPost]
-        public async Task<IActionResult> UploadImages(List<IFormFile> images)
+        public async Task<IActionResult> UploadImages(List<IFormFile> images, int productId = -9999, bool isUpdateDatabase = false)
         {
             var uploadedImagePaths = new List<string>();
             if (images is not null && images.Any())
@@ -84,12 +83,24 @@ namespace BanHangOnline.Areas.Admin.Controllers
                     }
 
                     // Save directory to Data
-                    uploadedImagePaths.Add("/uploads/" + uniqueFileName);
+                    string pathImage = "/uploads/" + uniqueFileName;
+                    uploadedImagePaths.Add(pathImage);
+
+                    // Update to database
+                    if (isUpdateDatabase)
+                    {
+                        _db.ProductImage.Add(new ProductImage
+                        {
+                            ProductId = productId,
+                            Image = pathImage,
+                            IsDefault = false,
+                        });
+                    }
                 }
+                await _db.SaveChangesAsync();
             }
 
             return Json(uploadedImagePaths);
         }
-        #endregion
     }
 }

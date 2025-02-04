@@ -34,9 +34,10 @@
 				<button type="button" class="btn btn-danger" title="Collapse">
 					Xóa hết
 				</button>
-				<button type="button" class="btn btn-success" title="Remove">
+				<button id="upload-images-btn" type="button" class="btn btn-success" title="Remove">
 					Thêm ảnh
 				</button>
+				<input type="file" data-id="@Model.FirstOrDefault()?.ProductId" id="images" accept="image/*" style="display: none;" />
 			</div>
 		</div>
 		<div class="card-body">
@@ -72,6 +73,36 @@
 			}
 		});
 	}
+
+	document.getElementById("upload-images-btn").addEventListener('click', function(){
+		document.getElementById("images").click();
+	});
+
+	document.getElementById("images").addEventListener("change", function(event){
+		var _id = $(this).data('id');
+		confirm(_id);
+		let files = event.target.files;
+		let formData = new FormData();
+		confirm(files.length);
+
+		for (var i = 0; i < files.length; i++) {
+			formData.append('images', files[i]);
+		}
+
+		formData.append('productId', _id);
+		formData.append('isUpdateDatabase', true);
+
+		$.ajax({
+			url: '/Admin/ProductImages/UploadImages',
+			type: 'post',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function () {
+				window.location.reload();
+			}
+		});
+	});
 
 	$(document).ready(function(){
 		$('body').on('click', '.btnDelete', function(){
