@@ -50,7 +50,13 @@
 							<img src="@item.Image" width="200" />
 							<div class="box-btn">
 								<a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
-								<a href="#" data-id="@item.Id" class="btn btn-sm btn-success btnDefault"><i class="fa fa-check"></i></a>
+								@if (item.IsDefault)
+								{
+									<a href="#" data-id="@item.Id" class="btn btn-sm btn-success btnDefault"><i class="fa fa-check"></i></a>
+								}
+								else{
+									<a href="#" data-id="@item.Id" class="btn btn-sm btn-warning btnDefault">X</a>
+								}
 							</div>
 						</li>
 					}
