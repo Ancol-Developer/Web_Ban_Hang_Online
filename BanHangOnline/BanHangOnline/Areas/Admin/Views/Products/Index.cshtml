@@ -76,6 +76,8 @@
                         <th>Số lượng</th>
                         <th>Giá</th>
                         <th>Ngày tạo</th>
+                        <th>Home</th>
+                        <th>Hot</th>
                         <th>Hiển thị</th>
                         <th style="width:150px;"></th>
                     </tr>
@@ -87,6 +89,8 @@
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHome = item.IsHome ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHot = item.IsHot ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" id="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
@@ -96,6 +100,12 @@
                                 <td>@item.Quantity</td>
                                 <td>@item.Price</td>
                                 <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.Id" class="btnHome">@Html.Raw(strCheckHome)</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.Id" class="btnHot">@Html.Raw(strCheckHot)</a>
+                                </td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
@@ -242,12 +252,52 @@
                 var btn = $(this);
                 var id = btn.data("id");
                 $.ajax({
-                    url: '/admin/products/IsActive',
+                    url: '/admin/products/IActive',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {
                         if (rs.success) {
                             if (rs.isActive) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('body').on('click', '.btnHome', function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/products/IsHome',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isHome) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('body').on('click', '.btnHot', function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/products/IsHot',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isHot) {
                                 btn.html("<i class='fa fa-check text-success'></i>");
                             }
                             else {

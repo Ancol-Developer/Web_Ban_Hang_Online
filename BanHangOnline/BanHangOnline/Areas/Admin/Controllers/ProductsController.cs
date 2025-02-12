@@ -129,5 +129,50 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
             return Json(new { success = false });
         }
+
+        [HttpPost]
+        public IActionResult IsActive(int id)
+        {
+            var item = _db.Product.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                item.IsActive = !item.IsActive;
+                _db.Product.Update(item);
+                _db.SaveChanges();
+                return Json(new { success = true, isActive = item.IsActive });
+            }
+
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public IActionResult IsHome(int id)
+        {
+            var item = _db.Product.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                item.IsHome = !item.IsHome;
+                _db.Product.Update(item);
+                _db.SaveChanges();
+                return Json(new { success = true, isHome = item.IsHome });
+            }
+
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public IActionResult IsHot(int id)
+        {
+            var item = _db.Product.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                item.IsHot = !item.IsHot;
+                _db.Product.Update(item);
+                _db.SaveChanges();
+                return Json(new { success = true, isHot = item.IsHot });
+            }
+
+            return Json(new { success = false });
+        }
     }
 }
