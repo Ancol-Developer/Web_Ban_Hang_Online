@@ -174,5 +174,20 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
             return Json(new { success = false });
         }
+
+        [HttpPost]
+        public IActionResult IsSale(int id)
+        {
+            var item = _db.Product.FirstOrDefault(x => x.Id == id);
+            if (item is not null)
+            {
+                item.IsSale = !item.IsSale;
+                _db.Product.Update(item);
+                _db.SaveChanges();
+                return Json(new { success = true, isSale = item.IsSale });
+            }
+
+            return Json(new { success = false });
+        }
     }
 }

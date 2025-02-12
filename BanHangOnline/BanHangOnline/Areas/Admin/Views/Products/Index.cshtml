@@ -78,6 +78,7 @@
                         <th>Ngày tạo</th>
                         <th>Home</th>
                         <th>Hot</th>
+                        <th>Sale</th>
                         <th>Hiển thị</th>
                         <th style="width:150px;"></th>
                     </tr>
@@ -91,6 +92,7 @@
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             var strCheckHome = item.IsHome ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             var strCheckHot = item.IsHot ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckSale = item.IsSale ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" id="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
@@ -105,6 +107,9 @@
                                 </td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnHot">@Html.Raw(strCheckHot)</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.Id" class="btnSale">@Html.Raw(strCheckSale)</a>
                                 </td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
@@ -298,6 +303,26 @@
                     success: function (rs) {
                         if (rs.success) {
                             if (rs.isHot) {
+                                btn.html("<i class='fa fa-check text-success'></i>");
+                            }
+                            else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('body').on('click', '.btnSale', function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/products/IsSale',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isSale) {
                                 btn.html("<i class='fa fa-check text-success'></i>");
                             }
                             else {
