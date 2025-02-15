@@ -27,7 +27,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
             // Save Search string
             ViewBag.SearchText = searchString;
-            return View(PaginatedList<News>.CreateAsync(items, pageNumber ?? 1, pageSize));
+            return View(Common<News>.CreateAsync(items, pageNumber ?? 1, pageSize));
         }
 
         public IActionResult Add()

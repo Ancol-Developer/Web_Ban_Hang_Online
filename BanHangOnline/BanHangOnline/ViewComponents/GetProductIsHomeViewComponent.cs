@@ -13,7 +13,7 @@ namespace BanHangOnline.ViewComponents
 		}
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			var items = await _db.Product.Where(x => x.IsHome && x.IsActive).Take(12).ToListAsync();
+			var items = await _db.Product.Where(x => x.IsHome && x.IsActive).Include(x => x.ProductImage).Take(12).ToListAsync();
 			return View(items);
 		}
 	}

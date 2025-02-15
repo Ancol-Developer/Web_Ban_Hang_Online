@@ -63,6 +63,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "CategoryProduct",
+    pattern: "san-pham/{id?}",
+    new { controller = "Product", action = "index" });
+
+app.MapControllerRoute(
+    name: "Contact",
+    pattern: "lien-he",
+    new { controller = "Contact", action = "index" });
+
 app.Run();
 
 // Data Source=DESKTOP-S9HPOGD\K;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False
