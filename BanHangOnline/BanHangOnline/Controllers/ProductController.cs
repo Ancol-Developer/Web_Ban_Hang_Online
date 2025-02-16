@@ -13,9 +13,14 @@ namespace BanHangOnline.Controllers
 			this._db = db;
 		}
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? id)
 		{
-			return View();
+			var items = await _db.Product.Include(x => x.ProductImage).ToListAsync();
+			if (id is not null)
+			{
+				items = await _db.Product.Include(x => x.ProductImage).Where(x => x.Id == id).ToListAsync();
+			}
+			return View(items);
 		}
 	}
 }
