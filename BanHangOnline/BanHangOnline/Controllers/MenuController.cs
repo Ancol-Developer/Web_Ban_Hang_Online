@@ -15,11 +15,5 @@ namespace BanHangOnline.Controllers
         {
             return View();
         }
-
-        public IActionResult MenuTop()
-        {
-            var items = _db.Category.OrderBy(x => x.Position).ToList();
-            return PartialView("_MenuTop", items);
-        }
     }
 }

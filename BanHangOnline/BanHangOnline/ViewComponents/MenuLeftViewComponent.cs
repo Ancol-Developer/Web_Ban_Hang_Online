@@ -11,8 +11,9 @@ namespace BanHangOnline.ViewComponents
         {
             this._db = db;
         }
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(int? id)
         {
+            ViewBag.CateId = id;
             var items = await _db.ProductCategory.ToListAsync();
             return View(items);
         }

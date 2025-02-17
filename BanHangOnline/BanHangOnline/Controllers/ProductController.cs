@@ -22,5 +22,23 @@ namespace BanHangOnline.Controllers
 			}
 			return View(items);
 		}
+
+		public async Task<IActionResult> ProductCategory(string alias, int id)
+		{
+			var items = await _db.Product.Include(x => x.ProductImage).ToListAsync();
+			if (id > 0)
+			{
+				items = await _db.Product.Include(x => x.ProductImage).Include(x => x.ProductCategory).Where(x => x.ProductCategoryId == id).ToListAsync();
+			}
+
+			var cate = _db.ProductCategory.FirstOrDefault(x => x.Id == id);
+
+			if (cate is not null)
+			{
+				ViewBag.CateName = cate.Title;
+			}
+			ViewBag.CateId = id;
+			return View(items);
+		}
 	}
 }

@@ -257,7 +257,7 @@
                 var btn = $(this);
                 var id = btn.data("id");
                 $.ajax({
-                    url: '/admin/products/IActive',
+                    url: '/admin/products/IsActive',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {
