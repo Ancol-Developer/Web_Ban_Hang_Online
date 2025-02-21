@@ -40,5 +40,11 @@ namespace BanHangOnline.Controllers
 			ViewBag.CateId = id;
 			return View(items);
 		}
+
+		public IActionResult Detail(string alias, int id)
+		{
+			var item = _db.Product.Include(x => x.ProductCategory).FirstOrDefault(x => x.Id == id);
+			return View(item);
+		}
 	}
 }

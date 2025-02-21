@@ -24,6 +24,11 @@
 				new { controller = "Product", action = "ProductCategory" });
 
 			app.MapControllerRoute(
+				name: "detail-Product",
+				pattern: "chi-tiet/{alias}-p{id}",
+				new { controller = "Product", action = "Detail" });
+
+			app.MapControllerRoute(
 				name: "Contact",
 				pattern: "lien-he",
 				new { controller = "Contact", action = "index" });
