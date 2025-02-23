@@ -18,7 +18,7 @@
                     <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/danh-muc-san-pham/@Model.ProductCategory?.Alias-@Model.ProductCategoryId"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.ProductCategory?.Title</a></li>
-                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Single Product</a></li>
+                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.Title</a></li>
                     </ul>
                 </div>
 
@@ -86,7 +86,7 @@
                             <span id="quantity_value">1</span>
                             <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
-                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                        <div class="red_button add_to_cart_button"><a class="btnAddToCart" data-id="@Model.Id" href="#">add to cart</a></div>
                         <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
                 </div>
