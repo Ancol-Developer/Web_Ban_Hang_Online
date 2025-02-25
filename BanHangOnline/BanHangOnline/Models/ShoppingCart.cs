@@ -40,7 +40,8 @@
 		{
 			return Items.Sum(x => x.Quantity);
 		}
-		 
+		
+		public void RemoveCart()
 		{
 			Items.Clear();
 		}
@@ -60,6 +61,7 @@
 	{
 		public int ProductId { get; set; }
 		public string? ProductName { get; set; }
+		public string? Alias { get; set; }
 		public string? CategoryName { get; set; }
 		public string? ProductImage { get; set; }
 		public int Quantity { get; set; }

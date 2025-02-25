@@ -32,6 +32,11 @@
 				name: "Contact",
 				pattern: "lien-he",
 				new { controller = "Contact", action = "index" });
-		}
+
+            app.MapControllerRoute(
+                name: "ShoppingCart",
+                pattern: "gio-hang",
+                new { controller = "ShoppingCart", action = "index" });
+        }
 	}
 }
