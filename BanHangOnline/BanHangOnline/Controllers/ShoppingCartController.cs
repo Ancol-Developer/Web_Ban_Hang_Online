@@ -96,5 +96,41 @@ namespace BanHangOnline.Controllers
 
 			return Json(code);
 		}
+
+		[HttpPost]
+		public IActionResult Delete(int id)
+		{
+			var code = new
+			{
+				Success = false,
+				msg = string.Empty,
+				code = -1,
+				count = 0
+			};
+
+			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
+
+			if (shoppingCart is not null)
+			{
+				var checkProduct = shoppingCart.Items.FirstOrDefault(x => x.ProductId == id);
+                if (checkProduct is not null)
+                {
+					shoppingCart.Remove(id);
+
+					code = new
+					{
+						Success = true,
+						msg = string.Empty,
+						code = 1,
+						count = shoppingCart.Items.Count
+					};
+
+					HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
+
+					return Json(code);
+				}
+            }
+			return Json(code);
+		}
 	}
 }

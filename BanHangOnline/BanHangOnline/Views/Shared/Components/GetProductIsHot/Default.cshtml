@@ -40,11 +40,11 @@
                                                 <h6 class="product_name"><a href="/chi-tiet/@item.Alias-p@(item.Id)">@item.Title</a></h6>
                                                 @if (item.PriceSale > 0)
                                                 {
-                                                    <div class="product_price">@Common.FormatNumber(item.PriceSale ?? 0, 0)<span>@Common.FormatNumber(item.Price, 0)</span></div>
+                                                    <div class="product_price">$@Common.FormatNumber(item.PriceSale)<span>$@Common.FormatNumber(item.Price)</span></div>
                                                 }
                                                 else
                                                 {
-                                                    <div class="product_price"><span>@Common.FormatNumber(item.Price, 0)</span></div>
+                                                    <div class="product_price">$@Common.FormatNumber(item.Price)</div>
                                                 }
                                             </div>
                                         </div>

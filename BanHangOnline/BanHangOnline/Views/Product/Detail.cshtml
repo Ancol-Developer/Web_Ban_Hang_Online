@@ -69,9 +69,13 @@
                     </div>
                     @if (Model.PriceSale > 0)
                     {
-                        <div class="original_price">$@Common.FormatNumber(Model.PriceSale)</div>
+                        <div class="original_price">$@Common.FormatNumber(Model.Price)</div>
+                        <div class="product_price">$@Common.FormatNumber(Model.PriceSale)</div>
                     }
-                    <div class="product_price">$@Common.FormatNumber(Model.Price)</div>
+                    else
+                    {
+                        <div class="product_price">$@Common.FormatNumber(Model.Price)</div>
+                    }
                     <ul class="star_rating">
                         <li><i class="fa fa-star" aria-hidden="true"></i></li>
                         <li><i class="fa fa-star" aria-hidden="true"></i></li>
