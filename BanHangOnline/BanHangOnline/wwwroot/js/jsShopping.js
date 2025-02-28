@@ -41,6 +41,16 @@
 			});
 		}
 	});
+
+	$('body').on('click', '.btnDeleteAll', function (e) {
+		e.preventDefault();
+		var id = $(this).data('id');
+		var conf = confirm("Bạn có chắc muốn xóa toàn bộ sản phẩm này khỏi giỏ hàng không?");
+
+		if (conf == true) {
+			DeleteAll();
+		}
+	});
 });
 
 function ShowCount() {
@@ -49,6 +59,28 @@ function ShowCount() {
 		type: 'GET',
 		success: function (rs) {
 			$('#checkout_items').html(rs.count);
+		}
+	});
+}
+
+function DeleteAll() {
+	$.ajax({
+		url: '/shoppingcart/DeleteAll',
+		type: 'POST',
+		success: function (rs) {
+			if (rs.success) {
+				LoadCart();
+			}
+		}
+	});
+}
+
+function LoadCart() {
+	$.ajax({
+		url: '/shoppingcart/Partial_Item_View',
+		type: 'GET',
+		success: function (rs) {
+			$('#load_data').html(rs);
 		}
 	});
 }

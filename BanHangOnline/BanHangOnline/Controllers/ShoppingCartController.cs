@@ -17,25 +17,36 @@ namespace BanHangOnline.Controllers
 		public IActionResult Index()
 		{
 			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
-            if (shoppingCart is not null)
-            {
+			if (shoppingCart is not null)
+			{
 				View(shoppingCart.Items);
 			}
-            return View();
+			return View();
+		}
+
+		[HttpGet]		
+		public IActionResult Partial_Item_View()
+		{
+			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
+			if (shoppingCart is not null)
+			{
+				return PartialView(shoppingCart.Items);
+			}
+			return PartialView(null);
 		}
 
 		[HttpGet]
 		public IActionResult ShowCount()
 		{
 			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
-            if (shoppingCart is not null)
-            {
+			if (shoppingCart is not null)
+			{
 				return Json(new
 				{
 					count = shoppingCart.Items.Count,
 				});
 			}
-            return Json(new
+			return Json(new
 			{
 				count = 0,
 			});
@@ -113,8 +124,8 @@ namespace BanHangOnline.Controllers
 			if (shoppingCart is not null)
 			{
 				var checkProduct = shoppingCart.Items.FirstOrDefault(x => x.ProductId == id);
-                if (checkProduct is not null)
-                {
+				if (checkProduct is not null)
+				{
 					shoppingCart.Remove(id);
 
 					code = new
@@ -129,8 +140,21 @@ namespace BanHangOnline.Controllers
 
 					return Json(code);
 				}
-            }
+			}
 			return Json(code);
+		}
+
+		[HttpPost]
+		public IActionResult DeleteAll()
+		{
+			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
+			if (shoppingCart is not null)
+			{
+				shoppingCart.ClearCart();
+				HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
+				return Json(new { Success = true });
+			}
+			return Json(new { Success = false });
 		}
 	}
 }

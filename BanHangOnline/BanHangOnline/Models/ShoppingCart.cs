@@ -41,7 +41,7 @@
 			return Items.Sum(x => x.Quantity);
 		}
 		
-		public void RemoveCart()
+		public void ClearCart()
 		{
 			Items.Clear();
 		}
