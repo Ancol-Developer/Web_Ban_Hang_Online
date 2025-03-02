@@ -24,6 +24,16 @@ namespace BanHangOnline.Controllers
 			return View();
 		}
 
+		public IActionResult CheckOut()
+		{
+			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
+			if (shoppingCart is not null)
+			{
+				ViewBag.CheckCart = shoppingCart;
+			}
+			return View(shoppingCart?.Items);
+		}
+
 		[HttpGet]		
 		public IActionResult Partial_Item_View()
 		{

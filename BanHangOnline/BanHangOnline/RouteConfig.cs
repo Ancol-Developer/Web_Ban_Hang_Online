@@ -37,6 +37,11 @@
                 name: "ShoppingCart",
                 pattern: "gio-hang",
                 new { controller = "ShoppingCart", action = "index" });
-        }
+
+			app.MapControllerRoute(
+				name: "ShoppingCart",
+				pattern: "thanh-toan",
+				new { controller = "ShoppingCart", action = "CheckOut" });
+		}
 	}
 }
