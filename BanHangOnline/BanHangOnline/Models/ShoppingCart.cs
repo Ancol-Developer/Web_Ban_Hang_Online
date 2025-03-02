@@ -52,7 +52,7 @@
 			if (checkExits is not null)
 			{
 				checkExits.Quantity = quantity;
-				checkExits.TotalPrice = checkExits.Price * checkExits.Price;
+				checkExits.TotalPrice = checkExits.Quantity * checkExits.Price;
 			}
 		}
     }

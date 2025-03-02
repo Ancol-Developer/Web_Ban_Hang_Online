@@ -36,6 +36,7 @@
 					if (rs.success) {
 						$('#checkout_items').html(rs.count);
 						$('#trow_' + id).remove();
+						LoadCart();
 					}
 				}
 			});
@@ -50,6 +51,13 @@
 		if (conf == true) {
 			DeleteAll();
 		}
+	});
+
+	$('body').on('click', '.btnUpdateCart', function (e) {
+		e.preventDefault();
+		var id = $(this).data('id');
+		var quantity = $('#Quantity_' + id).val();
+		Update(id, quantity);
 	});
 });
 
@@ -66,6 +74,19 @@ function ShowCount() {
 function DeleteAll() {
 	$.ajax({
 		url: '/shoppingcart/DeleteAll',
+		type: 'POST',
+		success: function (rs) {
+			if (rs.success) {
+				LoadCart();
+			}
+		}
+	});
+}
+
+function Update(id, quantity) {
+	$.ajax({
+		url: '/shoppingcart/Update',
+		data: { id: id , quantity: quantity},
 		type: 'POST',
 		success: function (rs) {
 			if (rs.success) {
