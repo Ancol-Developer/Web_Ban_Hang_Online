@@ -1,82 +1,91 @@
 ﻿@{
     ViewBag.Title = "Thanh Toán";
+    var cartItems = ViewBag.CheckCart as IEnumerable<ShoppingCartItem>;
 }
+
+<style>
+    .error {
+        color:red
+    }
+</style>
 
 <link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_responsive.css">
 <link rel="stylesheet" type="text/css" href="~/lib/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
 
 <div class="container product_section_container">
-	<div class="row">
-		<div class="col product_section clearfix">
+    <div class="row">
+        <div class="col product_section clearfix">
 
-			<!-- Breadcrumbs -->
+            <!-- Breadcrumbs -->
 
-			<div class="breadcrumbs d-flex flex-row align-items-center">
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
-				</ul>
-			</div>
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+                </ul>
+            </div>
 
-			<!-- Main Content -->
-			<div class="row">
-				<div class="col-md-12 text-center">
-					<h1 class="">Thanh toán</h1>
-					<p>Bạn hãy kiểm tra lại thông tin đơn hàng cho chính xác!</p>
-				</div>
-			</div>
-			<hr/>
+            <!-- Main Content -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="">Thanh toán</h1>
+                    <p>Bạn hãy kiểm tra lại thông tin đơn hàng cho chính xác!</p>
+                </div>
+            </div>
+            <hr />
 
-			@if (ViewBag.CheckCart is not null)
-			{
-				<div class="row">
-					<div class="col-md-9">
-						<h3>Thông tin khách hàng</h3>
-						<div class="form-group">
-							<label>Họ tên khách hàng:</label>
-							<input type="text" name="CustomerName" class="form-control" autocomplete="off" />
-						</div>
-						<div class="form-group">
-							<label>Số điện thoại</label>
-							<input type="number" name="Phone" class="form-control" autocomplete="off" />
-						</div>
-						<div class="form-group">
-							<label>Địa chỉ:</label>
-							<input type="text" name="Address" class="form-control" autocomplete="off" />
-						</div>
-						<div class="form-group">
-							<label>Email:</label>
-							<input type="email" name="Email" class="form-control" autocomplete="off" />
-						</div>
-						<div class="form-group">
-							<label>Hình thức thanh toán:</label>
-							<select class="form-control" name="Payment">
-								<option value="1" selected">COD</option>
-								<option value="2">Chuyển khoản</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<button type="button" class="btn btn-block btn-success">Đặt hàng</button>
-						</div>
-					</div>
+            @if (ViewBag.CheckCart is not null)
+            {
+                <div class="row">
+                    <div class="col-md-9">
+                        @await Html.PartialAsync("Partial_Form_Checkout")
+                    </div>
 
-					<div class="col-md-3">
-						@await Html.PartialAsync("Partial_Item_View_Checkout")
-					</div>
-				</div>
-			}
-			else
-			{
-				<div>
-					Bạn chưa có sản phẩm nào. Vui lòng quay lại trang <a href="/san-pham">sản phẩm</a> để mua hàng!!!
-				</div>
-			}
-		</div>
-	</div>
+                    <div class="col-md-3">
+                        @await Html.PartialAsync("Partial_Item_View_Checkout", cartItems)
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div>
+                    Bạn chưa có sản phẩm nào. Vui lòng quay lại trang <a href="/san-pham">sản phẩm</a> để mua hàng!!!
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @section scripts {
-	<script src="~/lib/assets/js/categories_custom.js"></script>
-	<script src="~/lib/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="~/lib/assets/js/categories_custom.js"></script>
+    <script src="~/lib/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myForm').validate({
+                rules: {
+                    'CustomerName': {
+                        required: true
+                    },
+                    'Phone': {
+                        required: true
+                    },
+                    'Address': {
+                        required: true
+                    },
+                    'Email': {
+                        required: true,
+                        email : true
+                    },
+                },
+                messages: {
+                    'CustomerName': 'Bạn không được để trống trường này!',
+                    'Phone': 'Bạn không được để trống trường này!',
+                    'Address': 'Bạn không được để trống trường này!',
+                    'Email': 'Email không hợp lệ!'
+                }
+            });
+        });
+    </script>
 }

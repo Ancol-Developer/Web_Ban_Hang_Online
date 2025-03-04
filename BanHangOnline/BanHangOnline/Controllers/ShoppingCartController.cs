@@ -29,9 +29,9 @@ namespace BanHangOnline.Controllers
 			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
 			if (shoppingCart is not null)
 			{
-				ViewBag.CheckCart = shoppingCart;
+				ViewBag.CheckCart = shoppingCart.Items;
 			}
-			return View(shoppingCart?.Items);
+			return View();
 		}
 
 		[HttpGet]		
@@ -181,5 +181,56 @@ namespace BanHangOnline.Controllers
 			}
 			return Json(new { Success = false });
 		}
-	}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult CheckOut(OrderViewModel orderRq)
+		{
+			var code = new
+			{
+				Success = false,
+				Code = -1,
+			};
+
+			if (ModelState.IsValid)
+			{
+				ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
+				if (shoppingCart is not null)
+				{
+					Order order = new Order();
+					order.CustomerName = orderRq.CustomerName;
+					order.Phone = orderRq.Phone;
+					order.Address = orderRq.Address;
+					shoppingCart.Items.ForEach(x => order.OrderDetail?.Add(new OrderDetail
+					{
+						ProductId = x.ProductId,
+						Quantity = x.Quantity,
+						Price = x.Price,
+					}));
+
+					order.TotalAmount = shoppingCart.Items.Sum(x => x.Price * x.Quantity);
+					order.TypePayment = orderRq.TypePayment;
+					order.Code = "DH" + Guid.NewGuid().ToString();
+					order.CreateDate = DateTime.Now;
+					order.ModifierDate = DateTime.Now;
+					order.CreateBy = orderRq.Phone;
+
+					shoppingCart.Items.Clear();
+					HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
+
+					//_db.Order.Add(order);
+					//_db.SaveChanges();
+
+					return RedirectToAction("CheckOutSuccess", new { isSuccess = true });
+                }
+			}
+			return RedirectToAction("CheckOutSuccess", new { isSuccess = false });
+		}
+
+		[HttpGet]
+		public IActionResult CheckOutSuccess(bool isSuccess)
+		{
+			return View(isSuccess);
+		}
+    }
 }
