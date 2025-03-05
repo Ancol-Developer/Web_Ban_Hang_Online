@@ -44,6 +44,12 @@ namespace BanHangOnline.Controllers
 		public IActionResult Detail(string alias, int id)
 		{
 			var item = _db.Product.Include(x => x.ProductCategory).Include(x => x.ProductImage).FirstOrDefault(x => x.Id == id);
+			if (item is not null)
+			{
+				item.ViewCount = item.ViewCount + 1;
+				_db.Product.Update(item);
+				_db.SaveChanges();
+			}
 			return View(item);
 		}
 	}
