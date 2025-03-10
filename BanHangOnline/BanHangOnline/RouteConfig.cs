@@ -2,7 +2,7 @@
 {
 	public static class RouteConfig
 	{
-		public static void RegisterRoutes(WebApplication app)
+		public static void RegisterRoutes(this WebApplication app)
 		{
 			app.MapAreaControllerRoute(
 				name: "MyAreaAdmin",

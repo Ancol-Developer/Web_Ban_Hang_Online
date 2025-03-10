@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.Features;
 using BanHangOnline;
+using BanHangOnline.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,11 +63,13 @@ app.UseStaticFiles();
 
 app.UseSession();
 
+app.UseMiddleware<SessionMiddleware>();
+
 app.UseRouting();
 
-RouteConfig.RegisterRoutes(app);
-
 app.UseAuthorization();
+
+app.RegisterRoutes();
 
 app.Run();
 

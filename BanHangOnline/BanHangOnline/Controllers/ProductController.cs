@@ -1,4 +1,6 @@
-﻿using Entities;
+﻿using BanHangOnline.Common;
+using BanHangOnline.Models;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +9,12 @@ namespace BanHangOnline.Controllers
 	public class ProductController : Controller
 	{
 		private readonly WebStoreDbContext _db;
+		private readonly IConfiguration _configuration;
 
-		public ProductController(WebStoreDbContext db)
+		public ProductController(WebStoreDbContext db, IConfiguration configuration)
         {
 			this._db = db;
+			this._configuration = configuration;
 		}
 
         public async Task<IActionResult> Index(int? id)
@@ -20,7 +24,27 @@ namespace BanHangOnline.Controllers
 			{
 				items = await _db.Product.Include(x => x.ProductImage).Where(x => x.Id == id).ToListAsync();
 			}
-			return View(items);
+
+            var item = new ThongKeModel();
+			var obj = new ThongKeTruyCap(_configuration);
+			var data = obj.ThongKe();
+
+			if (data is not null)
+			{
+				item.HomNay = data.HomNay.ToString("#,###");
+				item.HomQua = data.HomQua.ToString("#,###");
+				item.TuanNay = data.TuanNay.ToString("#,###");
+				item.TuanTruoc = data.TuanTruoc.ToString("#,###");
+				item.ThangNay = data.ThangNay.ToString("#,###");
+				item.ThangTruoc = data.ThangTruoc.ToString("#,###");
+				item.TatCa = data.TatCa.ToString("#,###");
+			}
+
+			ViewBag.visitor_online = UserSessionTracker.GetOnlineUserCount();
+
+			ViewBag.DataView = item;
+
+            return View(items);
 		}
 
 		public async Task<IActionResult> ProductCategory(string alias, int id)

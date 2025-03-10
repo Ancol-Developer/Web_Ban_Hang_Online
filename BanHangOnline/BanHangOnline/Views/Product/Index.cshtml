@@ -2,6 +2,7 @@
 @using BanHangOnline.Common
 @{
 	ViewBag.Title = "Danh sách sản phẩm";
+	var dataView = (ThongKeModel)ViewBag.DataView;
 }
 <link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_responsive.css">
@@ -40,6 +41,9 @@
 					</p>
 					<div id="slider-range"></div>
 					<div class="filter_button"><span>filter</span></div>
+
+					<hr/>
+					@await Html.PartialAsync("Refresh", dataView)
 				</div>
 
 				<!-- Sizes -->
