@@ -18,9 +18,15 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\Templates\" />
     <Folder Include="wwwroot\lib\ckfinder\userfiles\" />
     <Folder Include="wwwroot\lib\assets\" />
     <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Templates\send1.html" />
+    <None Include="wwwroot\Templates\send2.html" />
   </ItemGroup>
 
   <ItemGroup>

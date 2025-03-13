@@ -23,6 +23,7 @@ public class Order : CommonAbstract
     public string? Address { get; set; }
     public decimal TotalAmount { get; set; }
     public int Quantity { get; set; }
+    public string? Email { get; set; }
     public int TypePayment { get; set; }
 
     public ICollection<OrderDetail>? OrderDetail { get; set; }

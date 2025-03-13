@@ -3,16 +3,19 @@ using BanHangOnline.Models;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace BanHangOnline.Controllers
 {
 	public class ShoppingCartController : Controller
 	{
 		private readonly WebStoreDbContext _db;
+		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public ShoppingCartController(WebStoreDbContext db)
+		public ShoppingCartController(WebStoreDbContext db, IWebHostEnvironment webHostEnvironment)
 		{
 			this._db = db;
+			this._webHostEnvironment = webHostEnvironment;
 		}
 		public IActionResult Index()
 		{
@@ -34,7 +37,7 @@ namespace BanHangOnline.Controllers
 			return View();
 		}
 
-		[HttpGet]		
+		[HttpGet]
 		public IActionResult Partial_Item_View()
 		{
 			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
@@ -118,22 +121,22 @@ namespace BanHangOnline.Controllers
 			return Json(code);
 		}
 
-        [HttpPost]
-        public IActionResult Update(int id, int quantity)
-        {
-            ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
+		[HttpPost]
+		public IActionResult Update(int id, int quantity)
+		{
+			ShoppingCart? shoppingCart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("cart");
 
-            if (shoppingCart is not null)
-            {
+			if (shoppingCart is not null)
+			{
 				shoppingCart.UpdateQuantity(id, quantity);
-                HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
+				HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
 				return Json(new { Success = true });
-            }
+			}
 
-            return Json(new { Success = false });
-        }
+			return Json(new { Success = false });
+		}
 
-        [HttpPost]
+		[HttpPost]
 		public IActionResult Delete(int id)
 		{
 			var code = new
@@ -201,6 +204,7 @@ namespace BanHangOnline.Controllers
 					order.CustomerName = orderRq.CustomerName;
 					order.Phone = orderRq.Phone;
 					order.Address = orderRq.Address;
+					order.Email = orderRq.Email;
 					shoppingCart.Items.ForEach(x => order.OrderDetail?.Add(new OrderDetail
 					{
 						ProductId = x.ProductId,
@@ -215,14 +219,46 @@ namespace BanHangOnline.Controllers
 					order.ModifierDate = DateTime.Now;
 					order.CreateBy = orderRq.Phone;
 
-					shoppingCart.Items.Clear();
-					HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
-
 					//_db.Order.Add(order);
 					//_db.SaveChanges();
 
+					// Send Mail to Customer
+					string contentCustomer = string.Empty;
+
+					using (StreamReader reader = new StreamReader(Path.Combine(_webHostEnvironment.WebRootPath, "Templates", "send2.html")))
+					{
+						contentCustomer = reader.ReadToEnd();
+					}
+
+					string strProduct = string.Empty;
+
+					foreach (var product in shoppingCart.Items)
+					{
+						strProduct += "<tr>";
+						strProduct += "<td>" + product.ProductName + "</td>";
+						strProduct += "<td>" + product.Quantity + "</td>";
+						strProduct += "<td>" + Common.Common.FormatNumber(product.TotalPrice, 0) + "</td>";
+						strProduct += "</tr>";
+					}
+
+					contentCustomer = contentCustomer.Replace("{{MaDon}}",order.Code);
+					contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", order.CustomerName);
+					contentCustomer = contentCustomer.Replace("{{Phone}}", order.Phone);
+					contentCustomer = contentCustomer.Replace("{{Email}}", order.Email);
+					contentCustomer = contentCustomer.Replace("{{DiaChiNhanHang}}", order.Address);
+					contentCustomer = contentCustomer.Replace("{{SanPham}}", strProduct);
+					contentCustomer = contentCustomer.Replace("{{NgayDat}}", DateTime.Now.ToString("dd/MM/yyyy"));
+					contentCustomer = contentCustomer.Replace("{{ThanhTien}}", Common.Common.FormatNumber(order.TotalAmount, 0));
+					contentCustomer = contentCustomer.Replace("{{TongTien}}", Common.Common.FormatNumber(order.TotalAmount, 0));
+
+					Common.Common.SendMail("AncolShop", "Đơn hàng #" + order.Code, contentCustomer, orderRq.Email);
+
+					// Update Session
+					shoppingCart.Items.Clear();
+					HttpContext.Session.SetObjectAsJson("cart", shoppingCart);
+
 					return RedirectToAction("CheckOutSuccess", new { isSuccess = true });
-                }
+				}
 			}
 			return RedirectToAction("CheckOutSuccess", new { isSuccess = false });
 		}
@@ -232,5 +268,5 @@ namespace BanHangOnline.Controllers
 		{
 			return View(isSuccess);
 		}
-    }
+	}
 }
