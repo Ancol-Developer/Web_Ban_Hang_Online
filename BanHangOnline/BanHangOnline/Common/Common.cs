@@ -29,8 +29,8 @@ public class Common<T> : List<T>
 
 public class Common
 {
-    private static string password = "trandieu026@gmail.com";
-    private static string Email = "trandieu026@gmail.com";
+    private static string password = "xxxxxxx";
+    private static string Email = "xxxxxx.com";
 
     public static bool SendMail(string name, string subject, string content,
         string toMail)
