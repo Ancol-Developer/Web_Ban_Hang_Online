@@ -205,6 +205,7 @@ namespace BanHangOnline.Controllers
 					order.Phone = orderRq.Phone;
 					order.Address = orderRq.Address;
 					order.Email = orderRq.Email;
+
 					shoppingCart.Items.ForEach(x => order.OrderDetail?.Add(new OrderDetail
 					{
 						ProductId = x.ProductId,
@@ -219,8 +220,8 @@ namespace BanHangOnline.Controllers
 					order.ModifierDate = DateTime.Now;
 					order.CreateBy = orderRq.Phone;
 
-					//_db.Order.Add(order);
-					//_db.SaveChanges();
+					_db.Order.Add(order);
+					_db.SaveChanges();
 
 					// Send Mail to Customer
 					string contentCustomer = string.Empty;
