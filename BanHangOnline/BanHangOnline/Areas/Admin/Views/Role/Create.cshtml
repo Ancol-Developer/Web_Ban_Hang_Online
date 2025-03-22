@@ -1,0 +1,56 @@
+﻿@using Entities.IdentityEntities;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ApplicationRole
+@{
+    ViewBag.Title = "Thêm quyền quyền";
+}
+
+<!-- Content Header (Page header) -->
+@section naviheader {
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Home" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/News" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách quyền</h3>
+
+            <div class="card-tools">
+                <a href="/admin/role/create" class="btn btn-success">Thêm mới Quyền</a>
+            </div>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Create", "Role", FormMethod.Post))
+            {
+                @Html.ValidationSummary(false)
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <lable>Tên quyền</lable>
+                    @Html.TextBoxFor(x => x.Name, new {@class = "form-control"})
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Thêm mới</button>
+                </div>
+            }
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
