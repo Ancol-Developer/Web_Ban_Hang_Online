@@ -1,12 +1,14 @@
 ﻿using BanHangOnline.Common;
 using BanHangOnline.Models;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BanHangOnline.Controllers
 {
-	public class ProductController : Controller
+    [AllowAnonymous]
+    public class ProductController : Controller
 	{
 		private readonly WebStoreDbContext _db;
 		private readonly IConfiguration _configuration;

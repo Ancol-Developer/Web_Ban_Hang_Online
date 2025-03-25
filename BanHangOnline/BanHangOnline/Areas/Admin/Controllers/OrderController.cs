@@ -1,5 +1,6 @@
 ﻿using BanHangOnline.Common;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Printing;
@@ -7,7 +8,8 @@ using System.Drawing.Printing;
 namespace BanHangOnline.Areas.Admin.Controllers
 {
     [Area("Admin")]
-	public class OrderController : Controller
+    [Authorize(Roles = "Admin")]
+    public class OrderController : Controller
 	{
 		private readonly WebStoreDbContext _db;
         public OrderController(WebStoreDbContext db)

@@ -1,6 +1,7 @@
 ﻿using BanHangOnline.Common;
 using Entities;
 using Entities.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BanHangOnline.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin, Employee")]
     public class ProductsController : Controller
     {
         private readonly WebStoreDbContext _db;

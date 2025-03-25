@@ -1,13 +1,15 @@
 ﻿using BanHangOnline.Common;
 using BanHangOnline.Models;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 
 namespace BanHangOnline.Controllers
 {
-	public class ShoppingCartController : Controller
+    [AllowAnonymous]
+    public class ShoppingCartController : Controller
 	{
 		private readonly WebStoreDbContext _db;
 		private readonly IWebHostEnvironment _webHostEnvironment;

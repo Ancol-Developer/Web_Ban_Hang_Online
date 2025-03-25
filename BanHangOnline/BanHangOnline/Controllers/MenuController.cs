@@ -1,8 +1,10 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Controllers
 {
+    [AllowAnonymous]
     public class MenuController : Controller
     {
         private readonly WebStoreDbContext _db;

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.Features;
 using BanHangOnline;
 using BanHangOnline.Middleware;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,7 @@ builder.Services.AddDbContext<WebStoreDbContext>(options =>
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
-	options.Password.RequiredLength = 5;
+	options.Password.RequiredLength = 6;
 	options.Password.RequireNonAlphanumeric = true;
 	options.Password.RequireUppercase = true;
 	options.Password.RequireLowercase = true;
@@ -41,6 +42,24 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 								// create repository of user and role de thao tac du lieu nguoi dung trong dbcontext
 	.AddUserStore<UserStore<ApplicationUser, ApplicationRole, WebStoreDbContext, int>>()
 	.AddRoleStore<RoleStore<ApplicationRole, WebStoreDbContext, int>>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    // enfores authoriation policy (user must be authenticated) for all the action methods
+    options.AddPolicy("NotAuthenticated", policy =>
+    {
+        policy.RequireAssertion(context =>
+        {
+            return !context.User.Identity.IsAuthenticated;
+        });
+    });
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Admin/Account/Login";
+});
+
 
 builder.Services.Configure<FormOptions>(options =>
 {

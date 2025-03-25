@@ -1,11 +1,13 @@
 ﻿using BanHangOnline.Common;
 using Entities;
 using Entities.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class NewsController : Controller
     {
         private readonly WebStoreDbContext _db;

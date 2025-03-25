@@ -11,5 +11,6 @@ namespace BanHangOnline.Models
         [Required(ErrorMessage = "Password can't be blank")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
+        public bool RememberMe { get; set; }
     }
 }
