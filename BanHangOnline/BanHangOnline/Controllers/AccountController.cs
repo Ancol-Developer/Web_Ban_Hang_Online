@@ -1,11 +1,13 @@
 ﻿using BanHangOnline.Models;
 using Entities;
 using Entities.IdentityEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly WebStoreDbContext _db;
@@ -48,9 +50,11 @@ namespace BanHangOnline.Controllers
 
             if (identityResult.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, model.Role ?? "Customer");
+
                 // Sign in
                 await _signInManager.SignInAsync(user, false);
-                //return RedirectToAction(nameof(TradeController.Orders), "Trade");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
@@ -69,7 +73,7 @@ namespace BanHangOnline.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDTO loginDTO, string? returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel loginDTO, string? returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -85,7 +89,7 @@ namespace BanHangOnline.Controllers
                     return LocalRedirect(returnUrl);
                 }
 
-                return RedirectToAction(nameof(TradeController.Orders), "Trade");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             ModelState.AddModelError("Login", "Invalid email or password");
             return View(loginDTO);

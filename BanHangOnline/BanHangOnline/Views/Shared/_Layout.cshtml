@@ -59,15 +59,28 @@
 											<li><a href="#">Spanish</a></li>
 										</ul>
 									</li>
-									<li class="account">
-										<a href="#">
-											My Account
-											<i class="fa fa-angle-down"></i>
-										</a>
-										<ul class="account_selection">
-											<li><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-											<li><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-										</ul>
+									<li class="account" style="min-width:140px">
+										
+										@if(User.Identity.IsAuthenticated == true){
+											<a href="#">
+												@ViewBag.NameUser
+												<i class="fa fa-angle-down"></i>
+											</a>
+											<ul class="account_selection">
+												<li><a href="/account/login">Profile</a></li>
+												<li><a href="/account/logout"><i class="fa fa-user-plus" aria-hidden="true"></i>Logout</a></li>
+											</ul>
+										}
+										else{
+											<a href="#">
+												My Account
+												<i class="fa fa-angle-down"></i>
+											</a>
+											<ul class="account_selection" style="margin-left:10px">
+												<li><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+												<li><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+											</ul>
+										}
 									</li>
 								</ul>
 							</div>
@@ -143,17 +156,11 @@
 							My Account
 							<i class="fa fa-angle-down"></i>
 						</a>
-						<ul class="menu_selection">
+						<ul class="account_selection">
 							<li><a href="account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
 							<li><a href="account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
 						</ul>
 					</li>
-					<li class="menu_item"><a href="#">home</a></li>
-					<li class="menu_item"><a href="#">shop</a></li>
-					<li class="menu_item"><a href="#">promotion</a></li>
-					<li class="menu_item"><a href="#">pages</a></li>
-					<li class="menu_item"><a href="#">blog</a></li>
-					<li class="menu_item"><a href="#">contact</a></li>
 				</ul>
 			</div>
 		</div>
@@ -161,7 +168,7 @@
 		@RenderBody()
 
 		<!-- Newsletter -->
-		@await Html.PartialAsync("Partial_Subcrice")
+		@* @await Html.PartialAsync("Partial_Subcrice") *@
 
 		<!-- Footer -->
 		<footer class="footer">
@@ -199,7 +206,7 @@
 		</footer>
 	</div>
 
-    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/assets/js/jquery-3.2.1.min.js"></script>
     <script src="~/lib/assets/styles/bootstrap4/popper.js"></script>
     <script src="~/lib/assets/styles/bootstrap4/bootstrap.min.js"></script>

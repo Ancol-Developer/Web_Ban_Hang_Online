@@ -20,6 +20,11 @@ namespace BanHangOnline.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var user = _db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                ViewBag.NameUser = user?.FullName;
+            }
             return View();
         }
 
