@@ -42,6 +42,16 @@
 				name: "ShoppingCart",
 				pattern: "thanh-toan",
 				new { controller = "ShoppingCart", action = "CheckOut" });
-		}
+
+            app.MapControllerRoute(
+                name: "NewsList",
+                pattern: "tin-tuc",
+                new { controller = "News", action = "index" });
+
+            app.MapControllerRoute(
+               name: "NewsList",
+               pattern: "n{id}",
+               new { controller = "News", action = "Detail" });
+        }
 	}
 }

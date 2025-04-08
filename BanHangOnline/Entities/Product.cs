@@ -22,6 +22,7 @@ public class Product : CommonAbstract
 	public string? Description { get; set; }
 	[StringLength(50)]
     public string? ProductCode { get; set; }
+    public decimal OriginalPrice { get; set; }
 	public string? Detail { get; set; }
 	[StringLength(250)]
     public string? Image { get; set; }
