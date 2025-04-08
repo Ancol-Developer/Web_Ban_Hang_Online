@@ -145,7 +145,7 @@
                         data: barChartData,
                         options: barChartOptions
                     });
-                    load_data(rs.Data);
+                    load_data(rs.data);
                 }
             });
 
@@ -159,8 +159,8 @@
                 strHtml += "<tr>";
                 strHtml += "<td>" + (i + 1) + "</td>";
                 strHtml += "<td>" + strDate + "</td>";
-                strHtml += "<td>" + item.DoanhThu + "</td>";
-                strHtml += "<td>" + item.LoiNhuan + "</td>";
+                strHtml += "<td>" + item.doanhThu + "</td>";
+                strHtml += "<td>" + item.loiNhuan + "</td>";
                 strHtml += "</tr>";
             });
             $('#load_data').html(strHtml);
