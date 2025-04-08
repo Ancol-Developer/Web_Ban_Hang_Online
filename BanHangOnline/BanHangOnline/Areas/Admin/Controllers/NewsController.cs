@@ -1,11 +1,13 @@
 ﻿using BanHangOnline.Common;
 using Entities;
 using Entities.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanHangOnline.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class NewsController : Controller
     {
         private readonly WebStoreDbContext _db;
@@ -27,7 +29,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
 
             // Save Search string
             ViewBag.SearchText = searchString;
-            return View(PaginatedList<News>.CreateAsync(items, pageNumber ?? 1, pageSize));
+            return View(Common<News>.CreateAsync(items, pageNumber ?? 1, pageSize));
         }
 
         public IActionResult Add()
@@ -44,7 +46,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 model.CreateDate = DateTime.Now;
                 model.ModifierDate = DateTime.Now;
 
-                model.CategoryId = 2;
+                model.CategoryId = 6;
 
                 model.Alias = Filter.FilterChar(model.Title);
                 _db.News.Add(model);

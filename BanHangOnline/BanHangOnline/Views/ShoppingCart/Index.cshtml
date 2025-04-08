@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Giỏ hàng";
+}
+<link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_responsive.css">
+<link rel="stylesheet" type="text/css" href="~/lib/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+
+<div class="container product_section_container">
+	<div class="row">
+		<div class="col product_section clearfix">
+
+			<!-- Breadcrumbs -->
+
+			<div class="breadcrumbs d-flex flex-row align-items-center">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Giỏ hàng</a></li>
+				</ul>
+			</div>
+
+			<!-- Main Content -->
+			<div class="row">
+				<div class="col-md-12" id="load_data">
+					@await Html.PartialAsync("Partial_Item_View")
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script src="~/lib/assets/js/categories_custom.js"></script>
+	<script src="~/lib/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+}

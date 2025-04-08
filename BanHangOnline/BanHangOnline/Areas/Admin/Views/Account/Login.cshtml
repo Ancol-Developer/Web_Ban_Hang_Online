@@ -1,0 +1,64 @@
+﻿@model BanHangOnline.Models.LoginViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LayoutLogin";
+}
+
+<div class="card-body login-card-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+
+    <form asp-controller="Account" asp-action="Login" method="post">
+        @*Email*@
+        <div class="input-group mb-3">
+            <input asp-for="Email" class="form-control" placeholder="Email">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+        </div>
+       
+        @*Password*@
+        <div class="input-group mb-3">
+            <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-field flex">
+            <div class="w-25"></div>
+            <div class="flex-1">
+                <div asp-validation-summary="All" class="text-red"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <div class="icheck-primary">
+                    <input asp-for="RememberMe" type="checkbox" id="remember">
+                    <label for="remember">
+                        Remember Me
+                    </label>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </div>
+            <!-- /.col -->
+        </div>
+    </form>
+
+    <!-- /.social-auth-links -->
+
+    <p class="mb-1">
+        <a href="forgot-password.html">I forgot my password</a>
+    </p>
+    @* <p class="mb-0">
+    <a href="register.html" class="text-center">Register a new membership</a>
+    </p> *@
+</div>
+<!-- /.login-card-body -->

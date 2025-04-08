@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Entities.Category>
+
+@if(Model is not null && Model.Any()){
+	<ul class="navbar_menu">
+		@foreach(var item in Model)
+		{
+			if (item.Alias == "trang-chu")
+			{
+				item.Alias = string.Empty;
+			}
+			<li><a href="/@item.Alias">@item.Title</a></li>
+		}
+	</ul>
+}

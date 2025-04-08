@@ -22,6 +22,7 @@ public class WebStoreDbContext : IdentityDbContext<ApplicationUser, ApplicationR
     public DbSet<ProductImage> ProductImage { get; set; }
     public DbSet<Subscribe> Subscribe { get; set; }
     public DbSet<SystemSetting> SystemSetting { get; set; }
+    public DbSet<ThongKe> Thongke { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

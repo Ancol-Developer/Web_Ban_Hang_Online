@@ -74,9 +74,6 @@
 								<div class="custom-file">
 									@Html.TextBoxFor(x => x.Image, new { @id = "txtImage", @class = "form-control" })
 								</div>
-								<div class="input-group-append">
-									<input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
-								</div>
 							</div>
 						</div>
 
@@ -141,13 +138,9 @@
 			});
 		});
 
-		function BrowseServer(field) {
-			var finder = new CKFinder();
-			finder.selectActionFunction = function (fileUrl) {
-				document.getElementById(field).ariaValueMax = fileUrl;
-			};
-
-			finder.popup();
-		}
+		document.getElementById("txtImage").addEventListener("change", function () {
+			var filePath = this.value;  // Lấy đường dẫn file
+			document.getElementById("filePath").value = filePath;
+		});
 	</script>
 }
