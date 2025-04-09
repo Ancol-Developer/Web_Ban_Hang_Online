@@ -35,7 +35,7 @@ namespace BanHangOnline.Areas.Admin.Controllers
                 model.CreateDate = DateTime.Now;
                 model.ModifierDate = DateTime.Now;
 
-                model.CategoryId = 2;
+                model.CategoryId = 6;
 
                 model.Alias = Filter.FilterChar(model.Title);
                 _db.Posts.Add(model);

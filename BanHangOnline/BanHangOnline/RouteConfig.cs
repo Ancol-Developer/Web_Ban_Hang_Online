@@ -52,6 +52,11 @@
                name: "NewsList",
                pattern: "n{id}",
                new { controller = "News", action = "Detail" });
+
+            app.MapControllerRoute(
+                name: "bài viết",
+                pattern: "post/{alias?}",
+                new { controller = "Article", action = "index" });
         }
 	}
 }

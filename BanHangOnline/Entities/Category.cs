@@ -28,6 +28,7 @@ public class Category : CommonAbstract
     public string? SeoDescription { get; set;}
     [StringLength(150)]
     public string? SeoKeywords { get; set; }
+    public string? Link { get; set; }
     public int Position { get; set; }
 	public bool IsActive { get; set; }
 
