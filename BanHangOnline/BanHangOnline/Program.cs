@@ -21,6 +21,8 @@ builder.Services.AddSession(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor();
+
 // Create DB context
 // Create DB context
 builder.Services.AddDbContext<WebStoreDbContext>(options =>

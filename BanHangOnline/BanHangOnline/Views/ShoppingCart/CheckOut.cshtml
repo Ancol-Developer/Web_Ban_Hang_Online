@@ -12,7 +12,6 @@
 <link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/lib/assets/styles/categories_responsive.css">
 <link rel="stylesheet" type="text/css" href="~/lib/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
-
 <div class="container product_section_container">
     <div class="row">
         <div class="col product_section clearfix">
@@ -63,6 +62,14 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script>
         $(document).ready(function () {
+            $('body').on('change', '#drTypePayment', function () {
+                var type = $(this).val();
+                $('#load_form_payment').hide();
+                if (type == "2") {
+                    $('#load_form_payment').show();
+                }
+            });
+
             $('#myForm').validate({
                 rules: {
                     'CustomerName': {
